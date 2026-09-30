@@ -153,3 +153,8 @@ httpServer.listen(PORT, HOST, () => {
   console.log(`🚀 Server listening on ${HOST}:${PORT}`);
   console.log(`🏠 Local access: http://localhost:${PORT}`);
 });
+
+// Exported so integration tests can drive the app with supertest instead of
+// booting a second listener. Tests set process.env.PORT first to avoid
+// clashing with a locally running dev server.
+module.exports = { app, httpServer };

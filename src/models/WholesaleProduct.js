@@ -26,11 +26,10 @@ const wholesaleProductSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-wholesaleProductSchema.pre("validate", function (next) {
+wholesaleProductSchema.pre("validate", function () {
   if (this.stockQuantity <= 0 && this.status !== "ARCHIVED") {
     this.status = "OUT_OF_STOCK";
   }
-  next();
 });
 
 module.exports = mongoose.model("WholesaleProduct", wholesaleProductSchema);
