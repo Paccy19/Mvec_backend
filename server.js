@@ -45,6 +45,12 @@ app.use("/api/products", require("./src/routes/product.routes"));
 app.use("/api/categories", require("./src/routes/category.routes"));
 app.use("/api/admin/suppliers", require("./src/routes/admin.supplier.routes"));
 app.use("/api/suppliers", require("./src/routes/supplier.routes"));
+// Supplier portal endpoints under the same prefix. Registered after the base
+// router so its existing routes keep winning; each of these only claims paths
+// beginning with /me/ that the base router does not define.
+app.use("/api/suppliers", require("./src/routes/supplier.finance.routes"));
+app.use("/api/suppliers", require("./src/routes/supplier.operations.routes"));
+app.use("/api/suppliers", require("./src/routes/supplier.team.routes"));
 app.use("/api/cart", require("./src/routes/cart.routes"));
 app.use("/api/orders", require("./src/routes/order.routes"));
 app.use("/api/stores", require("./src/routes/store.routes"));
