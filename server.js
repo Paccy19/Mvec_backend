@@ -38,6 +38,19 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.get("/health", (req, res) => {
+  const dbStates = ["disconnected", "connected", "connecting", "disconnecting"];
+  const dbOk = mongoose.connection.readyState === 1;
+  res.status(dbOk ? 200 : 503).json({
+    status: dbOk ? "ok" : "degraded",
+    service: "mvec-backend",
+    mongodb: dbStates[mongoose.connection.readyState] || "unknown",
+    uptimeSeconds: Math.floor(process.uptime()),
+    memoryMB: Math.round(process.memoryUsage().rss / 1048576),
+    timestamp: new Date().toISOString(),
+  });
+});
+
   
 app.use("/api/auth", require("./src/routes/auth.routes"));
 app.use("/api/search", require("./src/routes/search.routes"));
